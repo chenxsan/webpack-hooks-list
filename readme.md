@@ -1,4 +1,8 @@
-# The execute order of webpack hooks 
+# The execute order of webpack hooks
+
+There're so many hooks in webpack, and you might be wondering in exactly which order they run.
+
+Here's the order list:
 
 ```
 ┌─────────┬─────────────────────────────────────────────────────────────────┬───────────────┐
