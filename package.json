@@ -5,7 +5,7 @@
   "author": "chenxsan",
   "license": "MIT",
   "devDependencies": {
-    "webpack": "^5.0.0-beta.17",
+    "webpack": "^5.0.0-beta.25",
     "webpack-cli": "^3.3.11"
   }
 }
