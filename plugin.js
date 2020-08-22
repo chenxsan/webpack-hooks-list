@@ -3,41 +3,20 @@ let bin = []
 function snapshot(hook, time = new Date().getTime()) {
   bin = bin.concat([[hook, time]])
 }
-const targetLength = 30
+const targetLength = 50
 class Plugin {
   apply(compiler) {
-    const compilerHooks = [
-      'additionalPass',
-      'afterCompile',
-      'afterDone',
-      'afterEmit',
-      'afterEnvironment',
-      'afterPlugins',
-      'afterResolvers',
-      'assetEmitted',
-      'beforeCompile',
-      'beforeRun',
-      'compile',
-      'contextModuleFactory',
-      'emit',
-      'entryOption',
-      'environment',
-      'infrastructureLog',
-      'initialize',
-      'make',
-      'normalModuleFactory',
-      'run',
-      'shouldEmit',
-      'thisCompilation',
-      'watchClose',
-      'watchRun',
-      'watchRun',
-    ]
+    const compilerHooks = Object.keys(compiler.hooks)
     const compilationHooks = [
       'buildModule',
       'rebuildModule',
       'failedModule',
       'succeedModule',
+      'stillValidModule',
+      'addEntry',
+      'failedEntry',
+      'succeedEntry',
+      'dependencyReferencedExports',
       'finishModules',
       'finishRebuildingModule',
       'seal',
@@ -90,25 +69,30 @@ class Plugin {
       'childCompiler',
     ]
     compilerHooks.forEach((hook) => {
-      if (typeof compiler.hooks[hook] === 'undefined') {
-        throw new Error(`${hook} does not exist in compiler`)
-      }
       compiler.hooks[hook].tap(MyPlugin, () => {
-        snapshot(`${'compiler.hooks'.padStart(targetLength)}.${hook.padEnd(targetLength)}`)
+        snapshot(
+          `${'compiler.hooks'.padStart(targetLength)}.${hook.padEnd(
+            targetLength
+          )}`
+        )
       })
     })
     compiler.hooks.compilation.tap(MyPlugin, (compilation) => {
-      compilationHooks.forEach((hook) => {
-        if (typeof compilation.hooks[hook] === 'undefined') {
-          throw new Error(`${hook} does not exist in compilation`)
+      Object.keys(compilation.hooks).forEach((hook) => {
+        try {
+          compilation.hooks[hook].tap(MyPlugin, () => {
+            snapshot(
+              `${'compilation.hooks'.padStart(targetLength)}.${hook.padEnd(
+                targetLength
+              )}`
+            )
+          })
+        } catch (err) {
+          console.log(hook, ' Cannot use tap')
         }
-        compilation.hooks[hook].tap(MyPlugin, () => {
-          snapshot(`${'compilation.hooks'.padStart(targetLength)}.${hook.padEnd(targetLength)}`)
-        })
       })
     })
     compiler.hooks.done.tap(MyPlugin, () => {
-      snapshot(`${'compiler.hooks'.padStart(targetLength)}.${'done'.padEnd(targetLength)}`)
       console.table(bin)
     })
   }
