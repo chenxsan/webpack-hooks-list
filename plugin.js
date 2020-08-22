@@ -3,71 +3,10 @@ let bin = []
 function snapshot(hook, time = new Date().getTime()) {
   bin = bin.concat([[hook, time]])
 }
-const targetLength = 40
+const targetLength = 30
 class Plugin {
   apply(compiler) {
     const compilerHooks = Object.keys(compiler.hooks)
-    const compilationHooks = [
-      'buildModule',
-      'rebuildModule',
-      'failedModule',
-      'succeedModule',
-      'stillValidModule',
-      'addEntry',
-      'failedEntry',
-      'succeedEntry',
-      'dependencyReferencedExports',
-      'finishModules',
-      'finishRebuildingModule',
-      'seal',
-      'unseal',
-      'optimizeDependencies',
-      'afterOptimizeDependencies',
-      'optimize',
-      'optimizeModules',
-      'afterOptimizeModules',
-      'optimizeChunks',
-      'afterOptimizeChunks',
-      'optimizeTree',
-      'afterOptimizeTree',
-      'optimizeChunkModules',
-      'afterOptimizeChunkModules',
-      'shouldRecord',
-      'reviveModules',
-      'beforeModuleIds',
-      'moduleIds',
-      'optimizeModuleIds',
-      'afterOptimizeModuleIds',
-      'reviveChunks',
-      'beforeChunkIds',
-      'optimizeChunkIds',
-      'afterOptimizeChunkIds',
-      'recordModules',
-      'recordChunks',
-      'beforeHash',
-      'afterHash',
-      'recordHash',
-      'record',
-      'beforeModuleAssets',
-      'additionalChunkAssets',
-      'shouldGenerateChunkAssets',
-      'beforeChunkAssets',
-      'additionalAssets',
-      'optimizeChunkAssets',
-      'afterOptimizeChunkAssets',
-      'optimizeAssets',
-      'afterOptimizeAssets',
-      'processAssets',
-      'afterProcessAssets',
-      'needAdditionalSeal',
-      'afterSeal',
-      'chunkHash',
-      'moduleAsset',
-      'chunkAsset',
-      'assetPath',
-      'needAdditionalPass',
-      'childCompiler',
-    ]
     compilerHooks.forEach((hook) => {
       compiler.hooks[hook].tap(MyPlugin, () => {
         snapshot(
