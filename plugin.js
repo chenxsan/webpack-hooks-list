@@ -3,7 +3,7 @@ let bin = []
 function snapshot(hook, time = new Date().getTime()) {
   bin = bin.concat([[hook, time]])
 }
-const targetLength = 30
+const targetLength = 35
 class Plugin {
   apply(compiler) {
     const compilerHooks = Object.keys(compiler.hooks)
