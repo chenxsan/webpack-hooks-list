@@ -2,7 +2,7 @@
 
 There're so many hooks in webpack, and you might be wondering in exactly which order they run.
 
-Here's the order list running `yarn webpack` compiling this project:
+Here's the order list running `yarn webpack` to compile this project:
 
 ```
 ┌─────────┬──────────────────────────────────────────────────────────────────────┬───────────────┐
